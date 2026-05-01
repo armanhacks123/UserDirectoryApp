@@ -1,5 +1,6 @@
 # UserDirectoryApp
 A modern User Directory Mobile App built with React Native + TypeScript, featuring API integration, favorites management, search functionality, and persistent storage.
+
 🚀 Features
 👥 Browse users from API
 🔍 Search users in real-time
@@ -9,6 +10,7 @@ A modern User Directory Mobile App built with React Native + TypeScript, featuri
 🎨 Clean card-based UI
 🌙 Dark mode support
 ⭐ Animated favorite button
+
 🛠️ Tech Stack
 React Native (CLI)
 TypeScript
