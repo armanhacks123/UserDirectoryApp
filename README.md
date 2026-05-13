@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
@@ -126,3 +127,7 @@ ScreenShots-
 
 
 >>>>>>> 4fbd430af3a6c641189f96a30c0b02fb818bad06
+=======
+# UserDirectoryApp
+User Directory App built with React Native CLI, TypeScript, and Redux Toolkit. Features include user listing, search, infinite scrolling, favorites management, persistent local storage, optimized FlatList performance, error handling, and detailed user profiles with responsive navigation for Android and iOS.
+>>>>>>> a86e568c6f5be8af1829168e2c8202bf9a8e33bb
