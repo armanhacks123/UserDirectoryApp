@@ -119,10 +119,14 @@ React Navigation
 AsyncStorage
 REST API (JSONPlaceholder)
 
-ScreenShots- 
-<img width="300" height="300" alt="Screenshot_1777608866" src="https://github.com/user-attachments/assets/30cecdf6-12a2-40e3-ad0c-7e8b9b50597b" />
-<img width="300" height="300" alt="Screenshot_1777608882" src="https://github.com/user-attachments/assets/4a24d390-c8d8-41f9-8632-9e7c73292dda" />
-<img width="300" height="300" alt="Screenshot_1777608891" src="https://github.com/user-attachments/assets/769b5983-5d20-4097-8f98-5f51d02dbbb4" />
+## Screenshots
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f113bea5-b17f-4454-bca6-8bf91685e5ff" width="250" />
+  <img src="https://github.com/user-attachments/assets/6642d974-9b03-4225-a11b-3ca85e556916" width="250" />
+  <img src="https://github.com/user-attachments/assets/d7c047d2-dd98-4848-a1ad-9eefff8d9ac1" width="250" />
+</p>
+
 
 
 
