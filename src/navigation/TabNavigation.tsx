@@ -2,8 +2,8 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text } from 'react-native';
 
-import UserListScreen from '../screen/UserListScreen';
-import FavoritesScreen from '../screen/FavoritesScreen';
+import UserListScreen from '../screens/UserListScreen';
+import FavoritesScreen from '../screens/FavoritesScreen';
 
 const Tab = createBottomTabNavigator();
 

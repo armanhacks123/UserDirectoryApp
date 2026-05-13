@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   View,
   Text,
@@ -11,77 +12,87 @@ import {
 } from 'react-native';
 
 import { RouteProp } from '@react-navigation/native';
+
 import { RootStackParamList } from '../types/navigations';
 
 type Props = {
-  route: RouteProp<RootStackParamList, 'UserDetailScreen'>;
+  route: RouteProp<
+    RootStackParamList,
+    'UserDetailsScreen'
+  >;
 };
 
 const UserDetailScreen = ({ route }: Props) => {
   const { user } = route.params;
-  const scheme = useColorScheme();
 
-  const isDark = scheme === 'dark';
+  const isDark =
+    useColorScheme() === 'dark';
 
   return (
     <ScrollView
       style={{
         flex: 1,
-        backgroundColor: isDark ? '#000' : '#f5f5f5',
-      }}
-    >
-      {/* HEADER */}
+        backgroundColor: isDark
+          ? '#000'
+          : '#f5f5f5',
+      }}>
       <View style={styles.header}>
         <Image
           source={{
-            uri: `https://i.pravatar.cc/150?img=${user.id}`,
+            uri: user.image,
           }}
           style={styles.avatar}
         />
       </View>
 
-      {/* CARD */}
       <View
         style={[
           styles.card,
-          { backgroundColor: isDark ? '#1e1e1e' : '#fff' },
-        ]}
-      >
+          {
+            backgroundColor: isDark
+              ? '#1e1e1e'
+              : '#fff',
+          },
+        ]}>
         <Text
           style={[
             styles.name,
-            { color: isDark ? '#fff' : '#000' },
-          ]}
-        >
-          {user.name}
+            {
+              color: isDark
+                ? '#fff'
+                : '#000',
+            },
+          ]}>
+          {user.firstName} {user.lastName}
         </Text>
 
         <Info
           label="📧 Email"
           value={user.email}
-          onPress={() => Linking.openURL(`mailto:${user.email}`)}
-        />
-
-        <Info label="📞 Phone" value={user.phone} />
-
-        <Info
-          label="🌐 Website"
-          value={user.website}
           onPress={() =>
-            Linking.openURL(`https://${user.website}`)
+            Linking.openURL(
+              `mailto:${user.email}`,
+            )
           }
         />
 
         <Info
+          label="📞 Phone"
+          value={user.phone}
+        />
+
+        <Info
           label="🏢 Company"
-          value={user.company?.name || 'N/A'}
+          value={
+            user.company?.name || 'N/A'
+          }
         />
 
         <Info
           label="📍 Address"
           value={
             user.address
-              ? `${user.address.street}, ${user.address.city}`
+              ? `${user.address.address}, ${user.address.city}`
               : 'N/A'
           }
         />
@@ -92,58 +103,74 @@ const UserDetailScreen = ({ route }: Props) => {
 
 export default UserDetailScreen;
 
-
-// ✅ REUSABLE INFO COMPONENT
 type InfoProps = {
   label: string;
   value?: string;
   onPress?: () => void;
 };
 
-const Info = ({ label, value, onPress }: InfoProps) => {
+const Info = ({
+  label,
+  value,
+  onPress,
+}: InfoProps) => {
   return (
     <TouchableOpacity
       style={styles.infoRow}
       onPress={onPress}
-      activeOpacity={onPress ? 0.6 : 1}
-    >
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.value}>{value || 'N/A'}</Text>
+      activeOpacity={
+        onPress ? 0.6 : 1
+      }>
+      <Text style={styles.label}>
+        {label}
+      </Text>
+
+      <Text style={styles.value}>
+        {value || 'N/A'}
+      </Text>
     </TouchableOpacity>
   );
 };
 
-
-// 🎨 STYLES
 const styles = StyleSheet.create({
   header: {
     height: 200,
+
     justifyContent: 'flex-end',
     alignItems: 'center',
+
     backgroundColor: '#4facfe',
   },
 
   avatar: {
     width: 140,
     height: 140,
+
     borderRadius: 70,
+
     borderWidth: 4,
     borderColor: '#fff',
+
     marginBottom: -70,
   },
 
   card: {
     marginTop: 80,
     marginHorizontal: 15,
+
     padding: 20,
+
     borderRadius: 20,
+
     elevation: 5,
   },
 
   name: {
     fontSize: 24,
     fontWeight: 'bold',
+
     textAlign: 'center',
+
     marginBottom: 20,
   },
 
@@ -159,6 +186,7 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 16,
     fontWeight: '500',
+
     marginTop: 3,
   },
 });

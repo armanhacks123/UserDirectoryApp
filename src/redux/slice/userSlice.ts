@@ -1,85 +1,136 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+} from '@reduxjs/toolkit';
 
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  website: string;
+import { fetchUsersApi } from '../../api/UserApi';
 
-  company?: {
-    name: string;
-  };
-
-  address?: {
-    street: string;
-    city: string;
-  };
-}
+import { User } from '../../types/user';
 
 interface UserState {
-  list: User[];
+  users: User[];
   favorites: User[];
+
   loading: boolean;
+  error: string | null;
+
+  page: number;
+  hasMore: boolean;
 }
 
 const initialState: UserState = {
-  list: [],
+  users: [],
   favorites: [],
+
   loading: false,
+  error: null,
+
+  page: 1,
+  hasMore: true,
 };
 
-export const fetchUsers = createAsyncThunk<User[]>(
+export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
-  async () => {
-    const res = await fetch('https://jsonplaceholder.typicode.com/users');
-    return await res.json();
-  }
-);
 
-// ✅ Load favorites from storage
-export const loadFavorites = createAsyncThunk(
-  'users/loadFavorites',
-  async () => {
-    const data = await AsyncStorage.getItem('favorites');
-    return data ? JSON.parse(data) : [];
-  }
+  async (page: number, thunkAPI) => {
+    try {
+      return await fetchUsersApi(page);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        'Failed to fetch users',
+      );
+    }
+  },
 );
 
 const userSlice = createSlice({
   name: 'users',
+
   initialState,
+
   reducers: {
-    toggleFavorite: (state, action: PayloadAction<User>) => {
-      const exists = state.favorites.find(u => u.id === action.payload.id);
+    toggleFavorite: (
+      state,
+      action: PayloadAction<User>,
+    ) => {
+      const exists = state.favorites.find(
+        item => item.id === action.payload.id,
+      );
 
       if (exists) {
         state.favorites = state.favorites.filter(
-          u => u.id !== action.payload.id
+          item => item.id !== action.payload.id,
         );
       } else {
         state.favorites.push(action.payload);
       }
+    },
 
-      // 💾 Save
-      AsyncStorage.setItem('favorites', JSON.stringify(state.favorites));
+    resetUsers: state => {
+      state.users = [];
+      state.page = 1;
+      state.hasMore = true;
     },
   },
+
   extraReducers: builder => {
     builder
+
+      // FETCH USERS PENDING
       .addCase(fetchUsers.pending, state => {
         state.loading = true;
+        state.error = null;
       })
+
+      // FETCH USERS SUCCESS
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = action.payload;
+
+        // REMOVE DUPLICATE USERS
+        const newUsers = action.payload.data.filter(
+          newUser =>
+            !state.users.some(
+              existing =>
+                existing.id === newUser.id,
+            ),
+        );
+
+        // APPEND UNIQUE USERS ONLY
+        const mergedUsers = [
+          ...state.users,
+          ...action.payload.data,
+        ];
+
+        const uniqueUsers = mergedUsers.filter(
+          (user, index, self) =>
+            index ===
+            self.findIndex(
+              item => item.id === user.id,
+            ),
+        );
+
+        state.users = uniqueUsers;
+
+        state.hasMore = action.payload.hasMore;
+
+        state.page += 1;
       })
-      .addCase(loadFavorites.fulfilled, (state, action) => {
-        state.favorites = action.payload;
+
+      // FETCH USERS FAILED
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.loading = false;
+
+        state.error =
+          (action.payload as string) ||
+          'Something went wrong';
       });
   },
 });
 
-export const { toggleFavorite } = userSlice.actions;
+export const {
+  toggleFavorite,
+  resetUsers,
+} = userSlice.actions;
+
 export default userSlice.reducer;

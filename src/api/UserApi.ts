@@ -1,14 +1,27 @@
 import axios from 'axios';
 
-// WRONG - This will cause a 401 if the token is fake
-// axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+import { User } from '../types/user';
 
-// RIGHT - For Reqres, keep it simple
-export const getUsers = (page: number) =>
-  axios.get(`https://reqres.in/api/users?page=${page}`);
-try {
-  const res = await axios.get(`https://reqres.in/api/users?page=${page}`);
-  console.log("API SUCCESS:", res.data);
-} catch (error) {
-  console.error("API ERROR:", error);
+const BASE_URL = 'https://dummyjson.com';
+
+export interface UsersResponse {
+  data: User[];
+  hasMore: boolean;
 }
+
+export const fetchUsersApi = async (
+  page: number,
+  limit: number = 20,
+): Promise<UsersResponse> => {
+  const skip = (page - 1) * limit;
+
+  const response = await axios.get(
+    `${BASE_URL}/users?limit=${limit}&skip=${skip}`,
+  );
+
+  return {
+    data: response.data.users,
+    hasMore:
+      skip + limit < response.data.total,
+  };
+};

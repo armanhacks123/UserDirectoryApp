@@ -41,13 +41,15 @@ const FavoritesScreen = () => {
             { backgroundColor: isDark ? '#1e1e1e' : '#fff' },
           ]}
           onPress={() =>
-            navigation.navigate('UserDetailScreen', { user: item })
+            navigation.navigate('UserDetailsScreen', {
+              user: item,
+            })
           }
         >
           <View style={styles.left}>
             <Image
               source={{
-                uri: `https://i.pravatar.cc/150?img=${item.id}`,
+                uri: item.image
               }}
               style={styles.avatar}
             />
@@ -59,7 +61,7 @@ const FavoritesScreen = () => {
                   { color: isDark ? '#fff' : '#000' },
                 ]}
               >
-                {item.name}
+                {item.firstName} {item.lastName}
               </Text>
               <Text style={styles.email}>{item.email}</Text>
             </View>

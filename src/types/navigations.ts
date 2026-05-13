@@ -1,4 +1,9 @@
+import { User } from './user';
+
 export type RootStackParamList = {
-    Home: undefined;
-    UserDetailScreen: { user: any };
+  Home: undefined;
+
+  UserDetailsScreen: {
+    user: User;
+  };
 };

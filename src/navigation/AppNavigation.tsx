@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import TabNavigation from './TabNavigation';
-import UserDetailsScreen from '../screen/UserDetailsScreen';
+import UserDetailsScreen from '../screens/UserDetailsScreen';
 import { RootStackParamList } from '../types/navigations';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -18,7 +18,7 @@ const AppNavigation = () => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen
-                    name="UserDetailScreen"
+                    name="UserDetailsScreen"
                     component={UserDetailsScreen}
                 />
             </Stack.Navigator>
